@@ -1,0 +1,553 @@
+> find -all
+../mydict: database runtime error: FATAL:  database "DOES_NOT_EXIST" does not exist
+
+> add -word Coffee   -def 'Stimulating drink made from coffee beans' -tag Hot -tag Drink
+> add -w    toast    -t    Hot -d 'The result of heating a slice of bread' -t Grain
+> add -tag  drink    -def  H2O -w  water
+> add -w    Whoops   -d    abc
+> add -de  'Small red fruit with seeds on the outside' -ta Cold -ta Fruit -wor Strawberry
+> find -all
+Coffee
+    Stimulating drink made from coffee beans
+Strawberry
+    Small red fruit with seeds on the outside
+toast
+    The result of heating a slice of bread
+water
+    H2O
+Whoops
+    abc
+> find -a
+Coffee
+    Stimulating drink made from coffee beans
+Strawberry
+    Small red fruit with seeds on the outside
+toast
+    The result of heating a slice of bread
+water
+    H2O
+Whoops
+    abc
+> find -word Toast
+toast
+    The result of heating a slice of bread
+> find -pat '^w.*'
+water
+    H2O
+Whoops
+    abc
+> find -tag Hot
+Coffee
+    Stimulating drink made from coffee beans
+toast
+    The result of heating a slice of bread
+> find -tag Drink -tag hot
+Coffee
+    Stimulating drink made from coffee beans
+toast
+    The result of heating a slice of bread
+water
+    H2O
+> find -all -f
+Coffee
+Strawberry
+toast
+water
+Whoops
+> find -all -ff
+Coffee
+    Stimulating drink made from coffee beans
+Strawberry
+    Small red fruit with seeds on the outside
+toast
+    The result of heating a slice of bread
+water
+    H2O
+Whoops
+    abc
+> strawberry
+Strawberry
+    Small red fruit with seeds on the outside
+> strawberry -f
+Strawberry
+> strawberry -ff
+Strawberry
+    Small red fruit with seeds on the outside
+> tags
+Cold
+Drink
+Fruit
+Grain
+Hot
+> rm -w whoops
+> find -all -f
+Coffee
+Strawberry
+toast
+water
+> rm -t Hot
+> tags
+Cold
+Drink
+Fruit
+Grain
+> edit -word Coffee -d 'A morning beverage' -t 'Brewed'
+> coffee
+Coffee
+    A morning beverage
+> tags
+Brewed
+Cold
+Drink
+Fruit
+Grain
+> edit -rmtag 'Brewed' -w Coffee
+> tags
+Cold
+Drink
+Fruit
+Grain
+> edit -word Coffee -edit 'Orange juice'
+> 'Orange juice'
+Orange juice
+    A morning beverage
+> edit -tag drink -ed beverage
+> tags
+beverage
+Cold
+Fruit
+Grain
+> edit -w 'Orange juice' -tag -- '-state=FL'
+> tags
+-state=FL
+beverage
+Cold
+Fruit
+Grain
+> -- -Orange
+> add -w 'Orange juce' -def 'Misspelling of a certain citrus refreshment' -nocheck
+> 'Orange juce'
+Orange juce
+    Misspelling of a certain citrus refreshment
+> add -w 'Orange juice' -def 'Again orange juice'
+../mydict: operation failed: word (Orange juice) already exists
+> rm -w nonexistent
+../mydict: operation failed: word (nonexistent) doesn't exist
+> rm -t nonexistent
+../mydict: operation failed: tag (nonexistent) doesn't exist
+> edit -w nonexistent -def 'new definition'
+../mydict: operation failed: word (nonexistent) doesn't exist
+> edit -w 'Orange juice' -rmtag 'noexistent'
+../mydict: operation failed: word/tag combination (Orange juice/noexistent) doesn't exist
+> edit -tag 'nonexistent' -edit 'new tag'
+../mydict: operation failed: tag (nonexistent) doesn't exist
+> add
+../mydict: invalid usage
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> add -x
+../mydict: invalid usage
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> add -word
+../mydict: missing argument for -word
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> add -word -something
+../mydict: invalid argument for -word
+try: -word -- -something
+> add -word --
+../mydict: missing argument for -word
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> add -word  something -def
+../mydict: missing argument for -def
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> add -word  something -def X -tag
+../mydict: missing argument for -tag
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> add -word something
+../mydict: invalid usage
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> add -word abc -word xyz -def 123
+../mydict: invalid usage
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> add -word abc -def xyz -def 123
+../mydict: invalid usage
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> add -word abc -def xyz -nocheck -nocheck
+../mydict: invalid usage
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> rm
+../mydict: invalid usage
+`rm' usage: mydict rm -word "..." | -tag "..."
+> rm -x
+../mydict: invalid usage
+`rm' usage: mydict rm -word "..." | -tag "..."
+> rm -word -something
+../mydict: invalid argument for -word
+try: -word -- -something
+> rm -word
+../mydict: missing argument for -word
+`rm' usage: mydict rm -word "..." | -tag "..."
+> rm -tag
+../mydict: missing argument for -tag
+`rm' usage: mydict rm -word "..." | -tag "..."
+> rm -word something -tag abc
+../mydict: invalid usage
+`rm' usage: mydict rm -word "..." | -tag "..."
+> rm -word abc -word xyz
+../mydict: invalid usage
+`rm' usage: mydict rm -word "..." | -tag "..."
+> rm -tag abc -tag xyz
+../mydict: invalid usage
+`rm' usage: mydict rm -word "..." | -tag "..."
+> find
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -x
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -word -something
+../mydict: invalid argument for -word
+try: -word -- -something
+> find -word
+../mydict: missing argument for -word
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -pat
+../mydict: missing argument for -pat
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -tag
+../mydict: missing argument for -tag
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -word X -f -ff
+../mydict: multiple formats given
+try: zero or one of -f, -ff, -fff
+> find -all -all
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -all -word abc
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -all -pat abc
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -all -tag abc
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -word abc -word xyz
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -word abc -pat xyz
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -word abc -tag xyz
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -pat abc -pat xyz
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> find -pat abc -tag xyz
+../mydict: invalid usage
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> tags xyz
+../mydict: invalid usage
+`tags' usage: mydict tags
+> edit
+../mydict: invalid usage
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -x
+../mydict: invalid usage
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -word -something
+../mydict: invalid argument for -word
+try: -word -- -something
+> edit -word
+../mydict: missing argument for -word
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -word X
+../mydict: invalid usage
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -word X -edit
+../mydict: missing argument for -edit
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -word X -def
+../mydict: missing argument for -def
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -word X -tag
+../mydict: missing argument for -tag
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -word X -rmtag
+../mydict: missing argument for -rmtag
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -tag -something
+../mydict: invalid argument for -tag
+try: -tag -- -something
+> edit -tag
+../mydict: missing argument for -tag
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -tag X
+../mydict: invalid usage
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -tag X -edit
+../mydict: missing argument for -edit
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -word X -word Y
+../mydict: invalid usage
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -word X -edit Y -edit Z
+../mydict: invalid usage
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -word X -def Y -def Z
+../mydict: invalid usage
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -tag X -tag Y -edit Z
+../mydict: invalid usage
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> edit -tag X -edit Y -edit Z
+../mydict: invalid usage
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> --
+../mydict: invalid usage
+try: mydict help
+> -Orange
+../mydict: invalid usage
+try: mydict help
+> 'Orange juice' -x
+../mydict: invalid usage
+try: mydict help
+> 'Orange juice' -f abc
+../mydict: invalid usage
+try: mydict help
+> 'Orange juice' -f -ff
+../mydict: invalid usage
+try: mydict help
+> 
+../mydict: no action given
+try: mydict help
+> help abc 123
+usage: mydict ARGS
+  Flags (-xyz) may be truncated, and given in any order. To
+  begin "..." with a - character, pass -- first: -- -something.
+
+  ARGS
+      add  -word "..." -def "..." [-nocheck] [-tag "..."] ...
+          Add the word with the given definition and tags. If -nocheck,
+          don't prompt when similar words or tags already exist.
+
+      rm   -word "..." | -tag "..."
+          Delete the given word or tag.
+
+      find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+          List all words, or words matching a pattern, or words having tags.
+
+      tags
+          List all tags.
+
+      edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+          | -tag "..." -edit "..."
+          Update a word, definition, add tags, or remove tags. Or update a tag.
+
+      "..." FORMAT
+          Shorthand for: find -word "..." FORMAT
+
+      (help | -h) [add | rm | find | tags | edit | help]
+      (add | rm | find | tags | edit | help) -h
+          Show help, optionally for a particular command.
+
+  FORMAT
+      [-f | -ff | -fff] Levels of detail in the results. Default, i.e. not specified means -ff.
+
+  ENVIRONMENT
+      To control the database connection, set environment variables with format MYDICT_xyz.
+      They will be converted to Postgres environment variables PGxyz. E.g. MYDICT_HOST => PGHOST.
+
+> -h abc 123
+usage: mydict ARGS
+  Flags (-xyz) may be truncated, and given in any order. To
+  begin "..." with a - character, pass -- first: -- -something.
+
+  ARGS
+      add  -word "..." -def "..." [-nocheck] [-tag "..."] ...
+          Add the word with the given definition and tags. If -nocheck,
+          don't prompt when similar words or tags already exist.
+
+      rm   -word "..." | -tag "..."
+          Delete the given word or tag.
+
+      find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+          List all words, or words matching a pattern, or words having tags.
+
+      tags
+          List all tags.
+
+      edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+          | -tag "..." -edit "..."
+          Update a word, definition, add tags, or remove tags. Or update a tag.
+
+      "..." FORMAT
+          Shorthand for: find -word "..." FORMAT
+
+      (help | -h) [add | rm | find | tags | edit | help]
+      (add | rm | find | tags | edit | help) -h
+          Show help, optionally for a particular command.
+
+  FORMAT
+      [-f | -ff | -fff] Levels of detail in the results. Default, i.e. not specified means -ff.
+
+  ENVIRONMENT
+      To control the database connection, set environment variables with format MYDICT_xyz.
+      They will be converted to Postgres environment variables PGxyz. E.g. MYDICT_HOST => PGHOST.
+
+> help add abc 123
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> -h add abc 123
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> help help abc 123
+`help' usage: mydict (help | -h) [add | rm | find | tags | edit | help]
+(add | rm | find | tags | edit | help) -h
+> -h help abc 123
+`help' usage: mydict (help | -h) [add | rm | find | tags | edit | help]
+(add | rm | find | tags | edit | help) -h
+> add -h abc 123
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> rm -h abc 123
+`rm' usage: mydict rm -word "..." | -tag "..."
+> find -h  abc 123
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> tags -h abc 123
+`tags' usage: mydict tags
+> edit -h abc 123
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> help -h abc 123
+`help' usage: mydict (help | -h) [add | rm | find | tags | edit | help]
+(add | rm | find | tags | edit | help) -h
+> help add
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> help rm
+`rm' usage: mydict rm -word "..." | -tag "..."
+> help find
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> help tags
+`tags' usage: mydict tags
+> help edit
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> help help
+`help' usage: mydict (help | -h) [add | rm | find | tags | edit | help]
+(add | rm | find | tags | edit | help) -h
+> -h add
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> -h rm
+`rm' usage: mydict rm -word "..." | -tag "..."
+> -h find
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> -h tags
+`tags' usage: mydict tags
+> -h edit
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> -h help
+`help' usage: mydict (help | -h) [add | rm | find | tags | edit | help]
+(add | rm | find | tags | edit | help) -h
+> add -h
+`add' usage: mydict add -word "..." -def "..." [-nocheck] [-tag "..."] ...
+> rm -h
+`rm' usage: mydict rm -word "..." | -tag "..."
+> find -h
+`find' usage: mydict find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+> tags -h
+`tags' usage: mydict tags
+> edit -h
+`edit' usage: mydict edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+    | -tag "..." -edit "..."
+> help -h
+`help' usage: mydict (help | -h) [add | rm | find | tags | edit | help]
+(add | rm | find | tags | edit | help) -h
+> help
+usage: mydict ARGS
+  Flags (-xyz) may be truncated, and given in any order. To
+  begin "..." with a - character, pass -- first: -- -something.
+
+  ARGS
+      add  -word "..." -def "..." [-nocheck] [-tag "..."] ...
+          Add the word with the given definition and tags. If -nocheck,
+          don't prompt when similar words or tags already exist.
+
+      rm   -word "..." | -tag "..."
+          Delete the given word or tag.
+
+      find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+          List all words, or words matching a pattern, or words having tags.
+
+      tags
+          List all tags.
+
+      edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+          | -tag "..." -edit "..."
+          Update a word, definition, add tags, or remove tags. Or update a tag.
+
+      "..." FORMAT
+          Shorthand for: find -word "..." FORMAT
+
+      (help | -h) [add | rm | find | tags | edit | help]
+      (add | rm | find | tags | edit | help) -h
+          Show help, optionally for a particular command.
+
+  FORMAT
+      [-f | -ff | -fff] Levels of detail in the results. Default, i.e. not specified means -ff.
+
+  ENVIRONMENT
+      To control the database connection, set environment variables with format MYDICT_xyz.
+      They will be converted to Postgres environment variables PGxyz. E.g. MYDICT_HOST => PGHOST.
+
+> -h
+usage: mydict ARGS
+  Flags (-xyz) may be truncated, and given in any order. To
+  begin "..." with a - character, pass -- first: -- -something.
+
+  ARGS
+      add  -word "..." -def "..." [-nocheck] [-tag "..."] ...
+          Add the word with the given definition and tags. If -nocheck,
+          don't prompt when similar words or tags already exist.
+
+      rm   -word "..." | -tag "..."
+          Delete the given word or tag.
+
+      find (-all | -word "..." | -pat "..." | -tag "..." ...) FORMAT
+          List all words, or words matching a pattern, or words having tags.
+
+      tags
+          List all tags.
+
+      edit -word "..." ([-edit "..."] [-def "..."] [-tag "..." ...] [-rmtag "..." ...])
+          | -tag "..." -edit "..."
+          Update a word, definition, add tags, or remove tags. Or update a tag.
+
+      "..." FORMAT
+          Shorthand for: find -word "..." FORMAT
+
+      (help | -h) [add | rm | find | tags | edit | help]
+      (add | rm | find | tags | edit | help) -h
+          Show help, optionally for a particular command.
+
+  FORMAT
+      [-f | -ff | -fff] Levels of detail in the results. Default, i.e. not specified means -ff.
+
+  ENVIRONMENT
+      To control the database connection, set environment variables with format MYDICT_xyz.
+      They will be converted to Postgres environment variables PGxyz. E.g. MYDICT_HOST => PGHOST.
+
