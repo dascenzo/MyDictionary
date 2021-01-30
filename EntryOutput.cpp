@@ -1,6 +1,20 @@
 #include "EntryOutput.h"
 #include "Interactive.h"
+#include <sstream>
 
+static std::string leadingPad(const std::string& text) {
+  std::istringstream stream(text);
+  std::string line, result;
+  std::size_t count = 0;
+  while (std::getline(stream, line)) {
+    ++count;
+    if (count > 1) {
+      result += "\n";
+    }
+    result += ("    " + line);
+  }
+  return result;
+}
 static std::string bold(const std::string& text) {
   if (isInteractive(stdout)) {
     return "\e[1m" + text + "\e[0m";
@@ -42,10 +56,10 @@ static std::ostream& doFormat(std::ostream& o, const Formatted& formatted) {
   }
   switch (formatted.format) {
   case FORMAT_ALL:
-    o << "\n\n    " << formatted.entry.definition << "\n\n";
+    o << "\n\n" << leadingPad(formatted.entry.definition) << "\n\n";
     break;
   case FORMAT_MODEST:
-    o << "\n    " << formatted.entry.definition << "\n";
+    o << "\n" << leadingPad(formatted.entry.definition) << "\n";
     break;
   case FORMAT_BRIEF:
     o << "\n";

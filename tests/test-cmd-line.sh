@@ -6,6 +6,8 @@ DB_INIT_SCRIPT="../Tables.sql"
 MYDICT="../mydict"
 ACT="actual-cmd-line.txt"
 EXP="expected-cmd-line.txt"
+newline="
+"
 
 if ! psql -d "$MYDICTTEST_DB" -f "$DB_INIT_SCRIPT" > /dev/null 2>&1; then
   echo "failed to initialize test database"
@@ -35,7 +37,7 @@ md "add -word Coffee   -def 'Stimulating drink made from coffee beans' -tag Hot 
 md "add -w    toast    -t    Hot -d 'The result of heating a slice of bread' -t Grain"
 md "add -tag  drink    -def  H2O -w  water"
 md "add -w    Whoops   -d    abc"
-md "add -de  'Small red fruit with seeds on the outside' -ta Cold -ta Fruit -wor Strawberry"
+md "add -de  'Small red fruit'"'"$newline"'"'with seeds on the outside' -ta Cold -ta Fruit -wor Strawberry"
 
 # find
 md "find -all"

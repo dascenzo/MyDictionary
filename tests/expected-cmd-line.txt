@@ -5,12 +5,13 @@
 > add -w    toast    -t    Hot -d 'The result of heating a slice of bread' -t Grain
 > add -tag  drink    -def  H2O -w  water
 > add -w    Whoops   -d    abc
-> add -de  'Small red fruit with seeds on the outside' -ta Cold -ta Fruit -wor Strawberry
+> add -de  'Small red fruit'"$newline"'with seeds on the outside' -ta Cold -ta Fruit -wor Strawberry
 > find -all
 Coffee
     Stimulating drink made from coffee beans
 Strawberry
-    Small red fruit with seeds on the outside
+    Small red fruit
+    with seeds on the outside
 toast
     The result of heating a slice of bread
 water
@@ -21,7 +22,8 @@ Whoops
 Coffee
     Stimulating drink made from coffee beans
 Strawberry
-    Small red fruit with seeds on the outside
+    Small red fruit
+    with seeds on the outside
 toast
     The result of heating a slice of bread
 water
@@ -58,7 +60,8 @@ Whoops
 Coffee
     Stimulating drink made from coffee beans
 Strawberry
-    Small red fruit with seeds on the outside
+    Small red fruit
+    with seeds on the outside
 toast
     The result of heating a slice of bread
 water
@@ -67,12 +70,14 @@ Whoops
     abc
 > strawberry
 Strawberry
-    Small red fruit with seeds on the outside
+    Small red fruit
+    with seeds on the outside
 > strawberry -f
 Strawberry
 > strawberry -ff
 Strawberry
-    Small red fruit with seeds on the outside
+    Small red fruit
+    with seeds on the outside
 > tags
 Cold
 Drink
